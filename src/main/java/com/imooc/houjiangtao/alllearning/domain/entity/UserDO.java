@@ -1,11 +1,16 @@
 package com.imooc.houjiangtao.alllearning.domain.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
+@TableName("user")
 public class UserDO implements Serializable {
 
     private static final long serialVersionUID = 1568067334195415830L;
@@ -22,6 +27,7 @@ public class UserDO implements Serializable {
     private String phone;
 
     /* 系统主信息 */
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
     //创建时间
     private LocalDateTime created;
@@ -35,7 +41,7 @@ public class UserDO implements Serializable {
      * 逻辑删除字段 ，0 正常，1：逻辑删除
      */
     private Integer status;
-
+    @Version
     private Long version;
 
 }
