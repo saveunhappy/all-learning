@@ -13,6 +13,8 @@ import com.imooc.houjiangtao.alllearning.util.UpdateValidationGroup;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,7 @@ public class UserController {
     /**
      * POST
      */
+    @CacheEvict(cacheNames = "users-cache",allEntries = true)
     @PostMapping
     public ResponseResult save(@Validated(InsertValidationGroup.class)
                                    @RequestBody
@@ -62,22 +65,14 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseResult delete(@NotNull(message = "用户id不能为空")
-                                     @PathVariable("id")
-                                             Long id) {
-        int delete = userService.delete(id);
-        if(delete == 1){
 
-            return ResponseResult.success("删除成功");
-        }else {
-            return ResponseResult.failure(ErrorCodeEnum.DELETE_FAILURE);
-        }
-    }
+    @Cacheable(cacheNames = "users-cache")
     @GetMapping
     public ResponseResult<PageResult> query(
             @NotNull Integer pageNo, @NotNull Integer pageSize,
             @Validated UserQueryDTO query) {
+
+        System.out.println("未使用缓存");
         PageQuery<UserQueryDTO> pageQuery = new PageQuery<>();
         pageQuery.setPageNo(pageNo);
         pageQuery.setPageSize(pageSize);
@@ -104,5 +99,17 @@ public class UserController {
         //上面那个copyProperties是因为里面有分页的信息。
         result.setData(userVOList);
         return ResponseResult.success(result);
+    }
+    @DeleteMapping("/{id}")
+    public ResponseResult delete(@NotNull(message = "用户id不能为空")
+                                     @PathVariable("id")
+                                             Long id) {
+        int delete = userService.delete(id);
+        if(delete == 1){
+
+            return ResponseResult.success("删除成功");
+        }else {
+            return ResponseResult.failure(ErrorCodeEnum.DELETE_FAILURE);
+        }
     }
 }
