@@ -12,8 +12,8 @@ import java.io.Serializable;
 public class PageQuery<T> implements Serializable {
     private static final long serialVersionUID = -1881440247206911714L;
     //当前页
-    @NotNull(message = "页号必须为正数!")
-    @Min(value = 1,message = "页号必须为正数")
+    @NotNull(message = "页号不能为空")
+    @Min(value = 1,message = "页号必须为正数!")
     private Integer pageNo = 1;
     //每页条数
     @NotNull(message = "每条页数不能为空")

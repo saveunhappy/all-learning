@@ -14,7 +14,9 @@ public class ValidatorUtils {
         Set<ConstraintViolation<T>> validate = validator.validate(object, groups);
         if(!CollectionUtils.isEmpty(validate)){
             StringBuilder exceptionMessage = new StringBuilder();
-            validate.forEach(exceptionMessage::append);
+            validate.forEach(constraintViolation->{
+                exceptionMessage.append(constraintViolation.getMessage());
+            });
             throw new RuntimeException(exceptionMessage.toString());
         }
     }
