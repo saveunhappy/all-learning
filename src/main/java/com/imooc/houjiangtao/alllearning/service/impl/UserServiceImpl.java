@@ -10,6 +10,7 @@ import com.imooc.houjiangtao.alllearning.domain.dto.UserQueryDTO;
 import com.imooc.houjiangtao.alllearning.domain.entity.UserDO;
 import com.imooc.houjiangtao.alllearning.mapper.UserMapper;
 import com.imooc.houjiangtao.alllearning.service.UserService;
+import com.imooc.houjiangtao.alllearning.util.ValidatorUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageResult<List<UserDTO>> query(PageQuery<UserQueryDTO> pageQuery) {
+        ValidatorUtils.validate(pageQuery);
         /**
          * UserQueryDTO里面就有一个属性，username，然后，DTO就是传输数据的，可能比entity多
          * 也可能比entity少，这里就是少，不需要那么多的字段，就传输层中间弄个DTO对象，
