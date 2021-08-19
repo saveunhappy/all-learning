@@ -32,7 +32,9 @@ public class WebConfig implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
+        //配置本地文件夹目录映射
+        registry.addResourceHandler("/upload/**")
+                .addResourceLocations("file:D:/BaiduNetdiskDownload/java的书籍/");
     }
 
 }

@@ -16,9 +16,7 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        if(!RATE_LIMITER.tryAcquire()){
-            throw new BusinessException(ErrorCodeEnum.RATE_LIMIT_ERROR);
-        }
+        if(!RATE_LIMITER.tryAcquire()) throw new BusinessException(ErrorCodeEnum.RATE_LIMIT_ERROR);
         return true;
     }
 }

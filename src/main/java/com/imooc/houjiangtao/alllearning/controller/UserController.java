@@ -38,7 +38,7 @@ public class UserController {
      */
     @CacheEvict(cacheNames = "users-cache",allEntries = true)
     @PostMapping
-    public ResponseResult save(@Validated(InsertValidationGroup.class)
+    public ResponseResult<String> save(@Validated(InsertValidationGroup.class)
                                    @RequestBody
                                            UserDTO userDTO) {
         int save = userService.save(userDTO);

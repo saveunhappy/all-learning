@@ -27,7 +27,7 @@ public enum ErrorCodeEnum {
     UPDATE_FAILURE("3003","更新失败"),
     DELETE_FAILURE("3004","删除失败"),
     RATE_LIMIT_ERROR("3005","限流异常"),
-
+    FILE_UPLOAD_FAILURE("3006","文件上传失败"),
 
     ;
     private String code;

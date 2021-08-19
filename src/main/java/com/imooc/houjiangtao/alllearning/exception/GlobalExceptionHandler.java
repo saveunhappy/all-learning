@@ -5,26 +5,24 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
 
-    @ResponseBody
     @ExceptionHandler(value = BusinessException.class)
     public ResponseResult runtimeExceptionHandle(BusinessException e){
-        log.error("捕捉到运行时异常",e);
+        log.error("捕捉到业务时异常",e);
         return ResponseResult.failure(e.getCode(),e.getMessage());
     }
 
-    @ResponseBody
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseResult runtimeExceptionHandle(RuntimeException e){
         log.error("捕捉到运行时异常",e);
         return ResponseResult.failure(ErrorCodeEnum.UNKNOWN_ERROR.getCode(),e.getMessage());
     }
-    @ResponseBody
     @ExceptionHandler(value = Throwable.class)
     public ResponseResult throwableHandle(Throwable th){
         log.error("捕捉throwable异常",th);
