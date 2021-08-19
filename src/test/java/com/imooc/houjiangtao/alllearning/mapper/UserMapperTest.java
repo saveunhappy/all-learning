@@ -23,6 +23,5 @@ public class UserMapperTest {
         params.put("username","username1");
         List<UserDO> userDOS = userMapper.selectByMap(params);
         log.info("{}",userDOS);
-
     }
 }
