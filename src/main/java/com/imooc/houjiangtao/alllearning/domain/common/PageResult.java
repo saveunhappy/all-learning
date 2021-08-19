@@ -3,6 +3,12 @@ package com.imooc.houjiangtao.alllearning.domain.common;
 import lombok.Data;
 
 import java.io.Serializable;
+
+/**
+ * 这个就是返回给前端看的，里面的pageSize和PageNo都是MybatisPlus的那个IPage对象要映射出来的。
+ *
+ * @param <T>
+ */
 @Data
 public class PageResult<T> implements Serializable {
     private static final long serialVersionUID = -6612958635973206284L;

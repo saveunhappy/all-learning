@@ -51,9 +51,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageResult<List<UserDTO>> query(PageQuery<UserQueryDTO> pageQuery) {
+        /**
+         * UserQueryDTO里面就有一个属性，username，然后，DTO就是传输数据的，可能比entity多
+         * 也可能比entity少，这里就是少，不需要那么多的字段，就传输层中间弄个DTO对象，
+         * 但是落库的时候，还是用的DO对象
+         */
         Page page = new Page(pageQuery.getPageNo(), pageQuery.getPageSize());
         UserDO query = new UserDO();
-        BeanUtils.copyProperties(pageQuery.getData(),query);
+        BeanUtils.copyProperties(pageQuery.getQuery(),query);
         //如果属性不一致，需要做特殊处理
         QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>(query);
         //查询
@@ -78,10 +83,14 @@ public class UserServiceImpl implements UserService {
                         return Stream.empty();
                     }
                 })
-                .map(userDO -> {
-                    UserDTO userDTO = new UserDTO();
-                    BeanUtils.copyProperties(userDO, userDTO);
-                    return userDTO;
+                .map(new Function<UserDO, UserDTO>() {
+                    //userDTOIPage的泛型是UserDO，所以这里能传过来
+                    @Override
+                    public UserDTO apply(UserDO userDO) {
+                        UserDTO userDTO = new UserDTO();
+                        BeanUtils.copyProperties(userDO, userDTO);
+                        return userDTO;
+                    }
                 }).collect(Collectors.toList());
         pageResult.setData(userDTOList);
 

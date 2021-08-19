@@ -11,5 +11,5 @@ public class PageQuery<T> implements Serializable {
     //每页条数
     private Integer pageSize = 20;
     //动态查询条件
-    private T data;
+    private T query;
 }

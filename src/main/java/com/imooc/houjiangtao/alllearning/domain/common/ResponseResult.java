@@ -1,5 +1,6 @@
 package com.imooc.houjiangtao.alllearning.domain.common;
 
+import com.imooc.houjiangtao.alllearning.exception.ErrorCodeEnum;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -17,5 +18,15 @@ public class ResponseResult<T> implements Serializable {
         responseResult.setSuccess(Boolean.TRUE);
         responseResult.setResult(result);
         return responseResult;
+    }
+    public static <T> ResponseResult<T> failure(String code,String message){
+        ResponseResult<T> responseResult = new ResponseResult<>();
+        responseResult.setSuccess(false);
+        responseResult.setCode(code);
+        responseResult.setMessage(message);
+        return responseResult;
+    }
+    public static <T> ResponseResult<T> failure(ErrorCodeEnum errorCodeEnum){
+       return failure(errorCodeEnum.getCode(), errorCodeEnum.getMessage());
     }
 }
