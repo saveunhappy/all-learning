@@ -35,6 +35,11 @@ public class WebConfig implements WebMvcConfigurer {
         //配置本地文件夹目录映射
         registry.addResourceHandler("/upload/**")
                 .addResourceLocations("file:D:/BaiduNetdiskDownload/java的书籍/");
+        //Swagger2
+        registry.addResourceHandler("/swagger-ui.html")
+                .addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 
 }

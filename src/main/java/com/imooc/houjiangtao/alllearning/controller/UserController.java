@@ -11,6 +11,7 @@ import com.imooc.houjiangtao.alllearning.service.ExcelExportService;
 import com.imooc.houjiangtao.alllearning.service.UserService;
 import com.imooc.houjiangtao.alllearning.util.InsertValidationGroup;
 import com.imooc.houjiangtao.alllearning.util.UpdateValidationGroup;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -31,6 +31,12 @@ import java.util.stream.Stream;
 @RequestMapping("/api/users")
 @Slf4j
 @Validated
+@Api(
+        value = "用户管理Controller",
+        tags = {"用户管理Controller"},
+        protocols = "http, https",
+        hidden = false
+)
 public class UserController {
     @Autowired
     private UserService userService;
@@ -58,6 +64,34 @@ public class UserController {
      * api/users{id} UserDTO userDTO
      */
     @PutMapping("/{id}")
+    @ApiOperation(value = "更新用户信息",
+            notes = "备注说明信息",
+            response = ResponseResult.class,
+            httpMethod = "PUT"
+    )
+    @ApiImplicitParams({
+            @ApiImplicitParam(
+                    name = "id",
+                    value = "参数说明，主键",
+                    required = true,
+                    paramType = "path",
+                    dataType = "Long",
+                    example = "12345"
+            ), @ApiImplicitParam(
+                    name = "userDTO",
+                    value = "用户信息",
+                    required = true,
+                    paramType = "body",
+                    dataType = "UserDTO",
+                    dataTypeClass = UserDTO.class
+    )
+    })
+    @ApiResponses(
+            {
+                    @ApiResponse(code = 0000,message = "操作成功"),
+                    @ApiResponse(code = 3004,message = "更新失败")
+            }
+    )
     public ResponseResult update(@NotNull @PathVariable("id") Long id,
                                  @Validated(UpdateValidationGroup.class)
                                  @RequestBody UserDTO userDTO) {
