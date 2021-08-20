@@ -14,6 +14,7 @@ import com.imooc.houjiangtao.alllearning.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -86,5 +87,11 @@ public class ExcelExportServiceImpl implements ExcelExportService {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
         //2.实现文件上传
         fileService.upload(inputStream, filename);
+    }
+    //这个在配置类上面得贴上@EnableAsync
+    @Async("exportServiceExecutor")
+    @Override
+    public void asyncExport(UserQueryDTO query, String filename) {
+        export(query,filename);
     }
 }

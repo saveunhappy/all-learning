@@ -128,7 +128,8 @@ public class UserController {
             @Validated UserQueryDTO query,
             @NotEmpty String fileName
     ){
-        excelExportService.export(query,fileName);
+//        excelExportService.export(query,fileName);
+        excelExportService.asyncExport(query,fileName);
         return ResponseResult.success(Boolean.TRUE);
     }
 }
