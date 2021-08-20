@@ -11,7 +11,7 @@ public class MybatisPlusConfig {
     @Bean
     public PaginationInterceptor paginationInterceptor(){
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-        //数据库方言
+        //数据库方言， 否则total就不生效了
         paginationInterceptor.setDbType(DbType.MYSQL);
         return paginationInterceptor;
     }

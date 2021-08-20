@@ -20,8 +20,11 @@ public class UserServiceImplTest {
         userDTO.setPassword("password1");
         userDTO.setPhone("15011112222");
         userDTO.setVersion(1L);
-        int save = userService.save(userDTO);
-        log.info("{}",save);
+        for (int i = 0; i < 20; i++) {
+            int save = userService.save(userDTO);
+
+        }
+       // log.info("{}",save);
     }
 
     /**

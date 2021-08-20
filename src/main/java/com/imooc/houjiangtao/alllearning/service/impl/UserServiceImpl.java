@@ -70,6 +70,7 @@ public class UserServiceImpl implements UserService {
         PageResult pageResult = new PageResult();
         pageResult.setPageNo((int) userDTOIPage.getCurrent());
         pageResult.setPageSize((int) userDTOIPage.getSize());
+        //这个total要设置数据库方言
         pageResult.setTotal(userDTOIPage.getTotal());
         pageResult.setPageNum(userDTOIPage.getPages());
         List<UserDTO> userDTOList = Optional.ofNullable(userDTOIPage.getRecords())

@@ -7,6 +7,7 @@ import com.imooc.houjiangtao.alllearning.domain.dto.UserDTO;
 import com.imooc.houjiangtao.alllearning.domain.dto.UserQueryDTO;
 import com.imooc.houjiangtao.alllearning.domain.vo.UserVO;
 import com.imooc.houjiangtao.alllearning.exception.ErrorCodeEnum;
+import com.imooc.houjiangtao.alllearning.service.ExcelExportService;
 import com.imooc.houjiangtao.alllearning.service.UserService;
 import com.imooc.houjiangtao.alllearning.util.InsertValidationGroup;
 import com.imooc.houjiangtao.alllearning.util.UpdateValidationGroup;
@@ -19,6 +20,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
@@ -32,6 +34,8 @@ import java.util.stream.Stream;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private ExcelExportService excelExportService;
 
     /**
      * POST
@@ -111,5 +115,20 @@ public class UserController {
         }else {
             return ResponseResult.failure(ErrorCodeEnum.DELETE_FAILURE);
         }
+    }
+
+    /**
+     * 数据导出
+     * @param query
+     * @param fileName
+     * @return
+     */
+    @GetMapping("/export")
+    public ResponseResult<Boolean> export(
+            @Validated UserQueryDTO query,
+            @NotEmpty String fileName
+    ){
+        excelExportService.export(query,fileName);
+        return ResponseResult.success(Boolean.TRUE);
     }
 }

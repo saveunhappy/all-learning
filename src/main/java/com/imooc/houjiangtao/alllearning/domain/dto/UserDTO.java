@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 @Data
 public class UserDTO implements Serializable {
     private static final long serialVersionUID = -68203752077273234L;
@@ -32,4 +34,6 @@ public class UserDTO implements Serializable {
     //版本号
     @NotNull(message = "版本号不能为空",groups = {UpdateValidationGroup.class})
     private Long version;
+    //创建时间
+    private LocalDateTime localDateTime;
 }
