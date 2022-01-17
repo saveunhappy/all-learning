@@ -16,7 +16,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
@@ -67,10 +66,10 @@ public class UserServiceImpl implements UserService {
         //IPage<UserDO> userDTOIPage = userMapper.selectPage(page, queryWrapper);
         IPage<UserDO> userDTOIPage = userMapper.selectPage(page, queryWrapper);
         //结果解析
-        PageResult pageResult = new PageResult();
+        PageResult<List<UserDTO>> pageResult = new PageResult<>();
         pageResult.setPageNo((int) userDTOIPage.getCurrent());
         pageResult.setPageSize((int) userDTOIPage.getSize());
-        //这个total要设置数据库方言
+        //这个total要设置数据库方言,否则不生效
         pageResult.setTotal(userDTOIPage.getTotal());
         pageResult.setPageNum(userDTOIPage.getPages());
         List<UserDTO> userDTOList = Optional.ofNullable(userDTOIPage.getRecords())
