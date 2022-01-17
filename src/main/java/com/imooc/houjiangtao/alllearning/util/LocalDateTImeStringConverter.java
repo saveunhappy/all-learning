@@ -9,6 +9,9 @@ import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * 导出excel时候，日期得转换成字符串，但是LOcalDateTImeString没法直接转换成String，还需要自定义
+ */
 public class LocalDateTImeStringConverter implements Converter<LocalDateTime> {
     @Override
     public Class supportJavaTypeKey() {

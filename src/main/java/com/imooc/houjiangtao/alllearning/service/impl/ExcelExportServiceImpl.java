@@ -13,14 +13,12 @@ import com.imooc.houjiangtao.alllearning.service.FileService;
 import com.imooc.houjiangtao.alllearning.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +30,7 @@ import java.util.stream.Stream;
 public class ExcelExportServiceImpl implements ExcelExportService {
     @Resource(name = "localFileServiceImpl")
     private FileService fileService;
-    @Autowired
+    @Resource
     private UserService userService;
 
     /**
@@ -43,7 +41,7 @@ public class ExcelExportServiceImpl implements ExcelExportService {
      */
     private void export(OutputStream outputStream, UserQueryDTO queryDTO) {
         //1.需要创建一个EasyExcel导出对象
-        ExcelWriter exceellWriter = EasyExcelFactory.write(outputStream, UserExportDTO.class).build();
+        ExcelWriter excellWriter = EasyExcelFactory.write(outputStream, UserExportDTO.class).build();
         //2.分批加载数据
         PageQuery<UserQueryDTO> pageQuery = new PageQuery<>();
         pageQuery.setQuery(queryDTO);
@@ -55,6 +53,7 @@ public class ExcelExportServiceImpl implements ExcelExportService {
         do {
             pageQuery.setPageNo(++pageNo);
             log.info("开始导出第[{}]页数据",pageNo);
+            //这里查询到了数据，下面的getData就是获取到了泛型里面的userDTO
             pageResult = userService.query(pageQuery);
             List<UserExportDTO> userExportDTOList = Optional.ofNullable(pageResult.getData())
                     .map(List::stream)
@@ -67,13 +66,13 @@ public class ExcelExportServiceImpl implements ExcelExportService {
             //3.导出分批加载的数据
 
             WriteSheet writeSheet = EasyExcelFactory.writerSheet(pageNo, "第" + pageNo + "页").build();
-            exceellWriter.write(userExportDTOList,writeSheet);
+            excellWriter.write(userExportDTOList,writeSheet);
             log.info("结束导出第[{}]页数据",pageNo);
-            //总页数大于当前页说明还有数据，需要再次执行
+            //总页数大于当前页说明还有数据，需要再次执行，总页数在mybatis-plus中获取到了。
         } while (pageResult.getPageNum() > pageNo);
 
         //4.收尾 ,执行finish，才会关闭excel文件流
-        exceellWriter.finish();
+        excellWriter.finish();
         log.info("完成导出");
     }
 
